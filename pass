@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+pswd_folder="path/to/password/folder"
+
+[ -g $1 ] && { echo "veuillez renseigner un login svp" && exit 1 }
+{ls $pswd_folder | grep -q $1} && { source crypt "$pswd_folder$1.txt" && exit 1 }
+echo "pas de login enregistré à ce nom. En créér un nouveau ? (y/n)" 
+read answer
+[ $answer = "y" ] || exit 1
+echo "veuillez renseigner votre mot de passe"
+read -s password
+echo "rentrez-le à nouveau" && read -s passwordbis
+[ $password = $passwordbis ] || { echo "erreur. Veuillez réessayer" && exit 1 }
+echo $password > "$pswd_folder$1.txt"
+mcrypt "$pswd_folder$1.txt" && rm "$pswd_folder$1.txt"

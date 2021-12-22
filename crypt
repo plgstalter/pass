@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+[ -g $1 ] && echo "veuillez rentrer un texte à encoder" || { mdecrypt -q "$1.nc" && { cat $1 | pbcopy && echo "succès" } && rm $1 }
